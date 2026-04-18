@@ -6,19 +6,19 @@
     <title>🔥 Сборник Скидок и Акций</title>
     <style>
         :root { --primary: #e74c3c; --secondary: #2ecc71; --dark: #333; --light: #f8f9fa; --shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        * { box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f9; color: var(--dark); margin: 0; padding: 20px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f9; color: var(--dark); padding: 20px; }
         header { text-align: center; margin-bottom: 30px; }
         h1 { color: var(--primary); margin-bottom: 5px; }
-        .subtitle { color: #666; margin: 0; }
+        .subtitle { color: #666; font-size: 0.95em; }
 
-        .controls { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
-        .categories { display: flex; flex-wrap: wrap; gap: 8px; }
+        .controls { background: white; padding: 15px; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 25px; }
+        .categories { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
         .categories button { padding: 8px 16px; border: none; background: #eee; cursor: pointer; border-radius: 20px; font-weight: 500; transition: 0.2s; }
         .categories button:hover { background: #ddd; }
         .categories button.active { background: var(--primary); color: white; }
 
-        .admin-panel { display: flex; gap: 10px; flex-wrap: wrap; }
+        .admin-panel { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
         .btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
         .btn-admin { background: #34495e; color: white; }
         .btn-admin:hover { background: #2c3e50; }
@@ -26,18 +26,15 @@
         .btn-add:hover { background: #27ae60; }
         .btn-auto { background: #9b59b6; color: white; display: none; position: relative; }
         .btn-auto:hover { background: #8e44ad; }
-        .btn-auto.loading { pointer-events: none; opacity: 0.8; }
-        .spinner { width: 16px; height: 16px; border: 2px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; vertical-align: middle; margin-right: 5px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
 
         .deals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         .deal-card { background: white; padding: 20px; border-radius: 12px; box-shadow: var(--shadow); transition: transform 0.2s; position: relative; }
         .deal-card:hover { transform: translateY(-3px); }
         .deal-source { position: absolute; top: 10px; right: 10px; font-size: 0.75em; background: #f0f0f0; padding: 2px 8px; border-radius: 10px; color: #555; }
-        .deal-cat { font-size: 0.8em; color: #888; text-transform: uppercase; letter-spacing: 1px; }
-        .deal-title { font-size: 1.2em; margin: 8px 0; font-weight: bold; }
+        .deal-cat { font-size: 0.8em; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .deal-title { font-size: 1.2em; margin-bottom: 8px; font-weight: bold; }
         .deal-discount { color: var(--primary); font-weight: bold; font-size: 1.1em; }
-        .empty-msg { grid-column: 1 / -1; text-align: center; padding: 40px; color: #888; }
+        .empty-msg { grid-column: 1 / -1; text-align: center; padding: 40px; color: #888; background: white; border-radius: 12px; box-shadow: var(--shadow); }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(3px); }
         .modal-content { background: white; padding: 25px; border-radius: 12px; width: 90%; max-width: 420px; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
@@ -59,7 +56,6 @@
     <p class="subtitle">Автоматический сбор акций с разных сайтов</p>
 </header>
 
-<!-- Панель управления (фильтры + кнопки) -->
 <div class="controls">
     <div class="categories" id="categoryTabs">
         <button class="active" data-cat="all">Все категории</button>
@@ -69,141 +65,194 @@
         <button data-cat="services">🎟️ Услуги</button>
     </div>
     <div class="admin-panel">
-    <button id="autoFetchBtn" class="btn btn-auto" onclick="startAutoFetch()">🤖 Авто-сбор</button>
-    <button id="addBtn" class="btn btn-add" onclick="openAddModal()">➕ Добавить</button>
-    <button id="adminBtn" class="btn btn-admin" onclick="toggleAdmin()">🔑 Админ</button>
+        <button id="autoFetchBtn" class="btn btn-auto" onclick="showAutoFetchInfo()">🤖 Авто-сбор</button>
+        <button id="addBtn" class="btn btn-add" onclick="openAddModal()">➕ Добавить</button>
+        <button id="adminBtn" class="btn btn-admin" onclick="toggleAdmin()">🔑 Админ</button>
     </div>
 </div>
 
-<!-- 🔥 Контейнер для карточек (данные грузятся из data.json) -->
+<!-- Контейнер для карточек -->
 <div class="deals-grid" id="dealsList">
     <div class="empty-msg">⏳ Загрузка акций...</div>
 </div>
 
 <footer>© 2026 Проект по дисциплине «Основы предметной деятельности»<br>Автоматический сбор данных с веб-сайтов</footer>
 
-<script>
-    let deals = [];
-    let currentCat = "all";
+<!-- Модалка входа -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('loginModal')">&times;</span>
+        <h2 style="text-align:center; margin-top:0;">🔐 Вход для администратора</h2>
+        <input type="password" id="adminPass" class="login-input" placeholder="Введите пароль">
+        <button class="btn login-btn" onclick="checkPassword()">Войти</button>
+        <p id="loginError" style="color:red; text-align:center; margin:10px 0 0; display:none;">Неверный пароль!</p>
+    </div>
+</div>
 
-    // === ЗАГРУЗКА ДАННЫХ ИЗ data.json ===
-    async function loadDeals() {
+<!-- Модалка добавления -->
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('addModal')">&times;</span>
+        <h2 style="margin-top:0;">➕ Добавить новую акцию</h2>
+        <form id="addForm" onsubmit="event.preventDefault(); saveNewDeal();">
+            <label>Название акции *</label>
+            <input type="text" id="dealTitle" required placeholder="Скидка 50% на кофе">
+            <label>Категория *</label>
+            <select id="dealCat" required>
+                <option value="food">🍎 Еда и продукты</option>
+                <option value="clothes">👕 Одежда</option>
+                <option value="electronics">💻 Электроника</option>
+                <option value="services">🎟️ Услуги и развлечения</option>
+            </select>
+            <label>Скидка (%) *</label>
+            <input type="number" id="dealDiscount" required placeholder="20" min="1" max="100">
+            <label>Источник (сайт)</label>
+            <input type="text" id="dealSource" placeholder="Например: Пятёрочка">
+            <button type="submit">✅ Сохранить</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const ADMIN_PASS = "admin123";
+    const MANUAL_KEY = "manual_deals";
+    
+    let serverDeals = [];
+    let manualDeals = [];
+    let currentCat = "all";
+    let isAdmin = false;
+
+    // 1. Загрузка данных при старте
+    window.addEventListener("DOMContentLoaded", () => {
+        setupTabs();
+        loadAllData();
+    });
+
+    async function loadAllData() {
+        // Загружаем с сервера (data.json)
         try {
-            // ?t=... отключает кэширование, чтобы видеть свежие данные сразу
             const res = await fetch('data.json?t=' + Date.now());
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            deals = await res.json();
-            renderDeals();
+            if (res.ok) serverDeals = await res.json();
         } catch (e) {
-            console.error('Ошибка загрузки data.json:', e);
-            document.getElementById('dealsList').innerHTML = 
-                '<div class="empty-msg">⚠️ Не удалось загрузить данные.<br><small>Проверьте, что файл data.json существует в корне сайта.</small></div>';
+            console.warn('data.json не найден или недоступен, используем только ручные данные');
+            serverDeals = [];
         }
+
+        // Загружаем ручные добавления из localStorage
+        manualDeals = JSON.parse(localStorage.getItem(MANUAL_KEY)) || [];
+        
+        renderDeals();
     }
 
-    // === ФИЛЬТРЫ КАТЕГОРИЙ ===
-    function setupCategoryTabs() {
+    // 2. Настройка вкладок
+    function setupTabs() {
         document.querySelectorAll("#categoryTabs button").forEach(btn => {
             btn.addEventListener("click", () => {
                 document.querySelectorAll("#categoryTabs button").forEach(b => b.classList.remove("active"));
                 btn.classList.add("active");
                 currentCat = btn.dataset.cat;
-                renderDeals();
+                renderDeals(); // Перерисовываем при переключении
             });
         });
     }
 
-    // === ОТРИСОВКА КАРТОЧЕК ===
+    // 3. Отрисовка (исправлен баг с фильтрацией)
     function renderDeals() {
         const list = document.getElementById("dealsList");
         list.innerHTML = "";
         
+        // Объединяем серверные и ручные данные
+        const allDeals = [...serverDeals, ...manualDeals];
+
+        // Фильтрация (проверяем и cat, и category для совместимости)
         const filtered = currentCat === "all" 
-            ? deals 
-            : deals.filter(d => d.cat === currentCat || d.category === currentCat);
-        
-        if (!filtered || filtered.length === 0) {
+            ? allDeals 
+            : allDeals.filter(d => (d.cat || d.category) === currentCat);
+
+        if (filtered.length === 0) {
             list.innerHTML = `<div class="empty-msg">🔍 В этой категории пока нет акций</div>`;
             return;
         }
 
-        const catNames = { 
-            food: "🍎 Еда", 
-            clothes: "👕 Одежда", 
-            electronics: "💻 Электроника", 
-            services: "🎟️ Услуги" 
-        };
-
+        const catNames = { food: "🍎 Еда", clothes: "👕 Одежда", electronics: "💻 Электроника", services: "🎟️ Услуги" };
+        
         filtered.forEach(d => {
-            // Поддержка двух форматов: {cat} или {category}
-            const catKey = d.cat || d.category || 'services';
+            const cat = d.cat || d.category || 'services';
             const discount = d.discount || d.percent || 0;
+            const source = d.source || d.site || '🌐';
+            const link = d.link || '#';
             
             list.innerHTML += `
                 <div class="deal-card">
-                    <div class="deal-source">${d.source || d.site || '🌐'}</div>
-                    <div class="deal-cat">${catNames[catKey] || catKey}</div>
+                    <div class="deal-source">${source}</div>
+                    <div class="deal-cat">${catNames[cat] || cat}</div>
                     <div class="deal-title">${d.title || d.name || 'Без названия'}</div>
                     <div class="deal-discount">Скидка: ${discount}%</div>
-                    ${d.link ? `<a href="${d.link}" target="_blank" style="display:block;margin-top:10px;color:#e74c3c;text-decoration:none;font-weight:500">Перейти →</a>` : ''}
+                    ${link !== '#' ? `<a href="${link}" target="_blank" style="display:block;margin-top:10px;color:#e74c3c;text-decoration:none;font-weight:500">Перейти →</a>` : ''}
                 </div>
             `;
         });
     }
 
-    // === 🤖 АВТО-СБОР (заглушка для статической версии) ===
-    function startAutoFetch() {
-        alert('🤖 Авто-сбор работает через GitHub Actions!\n\nДанные обновляются автоматически по расписанию.\nЧтобы запустить вручную: зайдите в репозиторий → Actions → "Update Discounts" → Run workflow');
-    }
-
-    // === ИНИЦИАЛИЗАЦИЯ ===
-    window.addEventListener("DOMContentLoaded", () => {
-        setupCategoryTabs();
-        loadDeals();
-    });
-
-    // Закрытие модальных окон по клику вне их
-    window.addEventListener("click", (e) => {
-        if (e.target.classList.contains("modal")) {
-            e.target.style.display = "none";
-        }
-    });
-// === ПРОСТАЯ АДМИНКА (для учебного проекта) ===
-const ADMIN_PASS = "admin123"; // ⚠️ Небезопасно для продакшена, но ок для учебы
-let isAdmin = false;
-
-function toggleAdmin() {
-    const btn = document.getElementById("adminBtn");
-    const addBtn = document.getElementById("addBtn");
-    
-    if (!isAdmin) {
-        // Показываем форму ввода пароля
-        const pass = prompt("🔐 Введите пароль администратора:");
-        if (pass === ADMIN_PASS) {
-            isAdmin = true;
-            btn.innerHTML = "🔒 Выйти";
-            btn.style.background = "#7f8c8d";
-            addBtn.style.display = "block"; // Показываем кнопку "Добавить"
-            alert("✅ Вы вошли как администратор");
+    // 4. Админка
+    function toggleAdmin() {
+        if (!isAdmin) {
+            document.getElementById("adminPass").value = "";
+            document.getElementById("loginError").style.display = "none";
+            document.getElementById("loginModal").style.display = "flex";
+            setTimeout(() => document.getElementById("adminPass").focus(), 100);
         } else {
-            alert("❌ Неверный пароль");
+            isAdmin = false;
+            document.getElementById("adminBtn").innerHTML = "🔑 Админ";
+            document.getElementById("adminBtn").style.background = "#34495e";
+            document.getElementById("addBtn").style.display = "none";
+            document.getElementById("autoFetchBtn").style.display = "none";
         }
-    } else {
-        // Выход
-        isAdmin = false;
-        btn.innerHTML = "🔑 Админ";
-        btn.style.background = "#34495e";
-        addBtn.style.display = "none";
-        alert("👋 Вы вышли из аккаунта");
     }
-}
 
-// === ДОБАВЛЕНИЕ АКЦИИ (упрощённо - только для демо) ===
-function openAddModal() {
-    // В статической версии нельзя сохранить данные на сервер
-    // Поэтому показываем заглушку
-    alert("📝 В полной версии здесь откроется форма добавления.\n\nДля учебного проекта: правьте data.json вручную или настройте парсер на GitHub Actions.");
-}
+    function checkPassword() {
+        if (document.getElementById("adminPass").value === ADMIN_PASS) {
+            isAdmin = true;
+            closeModal("loginModal");
+            document.getElementById("adminBtn").innerHTML = "🔒 Выйти";
+            document.getElementById("adminBtn").style.background = "#7f8c8d";
+            document.getElementById("addBtn").style.display = "block";
+            document.getElementById("autoFetchBtn").style.display = "block";
+        } else {
+            document.getElementById("loginError").style.display = "block";
+        }
+    }
+
+    // 5. Ручное добавление
+    function openAddModal() {
+        document.getElementById("addForm").reset();
+        document.getElementById("addModal").style.display = "flex";
+    }
+
+    function saveNewDeal() {
+        const title = document.getElementById("dealTitle").value.trim();
+        const cat = document.getElementById("dealCat").value;
+        const discount = parseInt(document.getElementById("dealDiscount").value);
+        const source = document.getElementById("dealSource").value.trim() || "Вручную";
+
+        if (!title || isNaN(discount)) return alert("Заполните обязательные поля!");
+
+        const newDeal = { title, category: cat, discount, source, id: Date.now() };
+        manualDeals.unshift(newDeal); // Добавляем в начало
+        localStorage.setItem(MANUAL_KEY, JSON.stringify(manualDeals));
+        
+        closeModal("addModal");
+        renderDeals();
+        alert("✅ Акция добавлена! (Сохраняется в вашем браузере)");
+    }
+
+    function showAutoFetchInfo() {
+        alert('🤖 Авто-сбор настроен через GitHub Actions.\n\nПарсер обновляет файл data.json, а сайт автоматически подхватывает новые данные при загрузке страницы.');
+    }
+
+    // Утилиты
+    function closeModal(id) { document.getElementById(id).style.display = "none"; }
+    window.addEventListener("click", (e) => { if (e.target.classList.contains("modal")) e.target.style.display = "none"; });
 </script>
 
 </body>
