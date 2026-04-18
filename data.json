@@ -1,0 +1,14 @@
+[
+  {
+    "title": "iPhone 15 со скидкой",
+    "category": "Электроника",
+    "discount": 15,
+    "link": "https://example.com/iphone"
+  },
+  {
+    "title": "Бургер в подарок",
+    "category": "Еда",
+    "discount": 100,
+    "link": "https://example.com/burger"
+  }
+]

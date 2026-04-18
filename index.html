@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 Сборник Скидок и Акций</title>
+    <style>
+        :root { --primary: #e74c3c; --secondary: #2ecc71; --dark: #333; --light: #f8f9fa; --shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f9; color: var(--dark); margin: 0; padding: 20px; }
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { color: var(--primary); margin-bottom: 5px; }
+        .subtitle { color: #666; margin: 0; }
+
+        .controls { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
+        .categories { display: flex; flex-wrap: wrap; gap: 8px; }
+        .categories button { padding: 8px 16px; border: none; background: #eee; cursor: pointer; border-radius: 20px; font-weight: 500; transition: 0.2s; }
+        .categories button:hover { background: #ddd; }
+        .categories button.active { background: var(--primary); color: white; }
+
+        .admin-panel { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn-admin { background: #34495e; color: white; }
+        .btn-admin:hover { background: #2c3e50; }
+        .btn-add { background: var(--secondary); color: white; display: none; }
+        .btn-add:hover { background: #27ae60; }
+        .btn-auto { background: #9b59b6; color: white; display: none; position: relative; }
+        .btn-auto:hover { background: #8e44ad; }
+        .btn-auto.loading { pointer-events: none; opacity: 0.8; }
+        .spinner { width: 16px; height: 16px; border: 2px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; vertical-align: middle; margin-right: 5px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .deals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .deal-card { background: white; padding: 20px; border-radius: 12px; box-shadow: var(--shadow); transition: transform 0.2s; position: relative; }
+        .deal-card:hover { transform: translateY(-3px); }
+        .deal-source { position: absolute; top: 10px; right: 10px; font-size: 0.75em; background: #f0f0f0; padding: 2px 8px; border-radius: 10px; color: #555; }
+        .deal-cat { font-size: 0.8em; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        .deal-title { font-size: 1.2em; margin: 8px 0; font-weight: bold; }
+        .deal-discount { color: var(--primary); font-weight: bold; font-size: 1.1em; }
+        .empty-msg { grid-column: 1 / -1; text-align: center; padding: 40px; color: #888; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(3px); }
+        .modal-content { background: white; padding: 25px; border-radius: 12px; width: 90%; max-width: 420px; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #666; }
+        .close:hover { color: var(--primary); }
+        form label { display: block; margin: 12px 0 5px; font-weight: 500; font-size: 0.9em; }
+        form input, form select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+        form button { width: 100%; margin-top: 20px; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600; }
+        form button:hover { background: #c0392b; }
+        .login-input { width: 100%; padding: 12px; margin-top: 15px; border: 2px solid #eee; border-radius: 6px; font-size: 16px; text-align: center; }
+        .login-btn { background: #34495e !important; margin-top: 10px; }
+        footer { text-align: center; margin-top: 50px; color: #888; font-size: 0.85em; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🔥 Сборник Скидок и Акций</h1>
+    <p class="subtitle">Автоматический сбор акций с разных сайтов</p>
+</header>
+
+<div class="controls">
+    <div class="categories" id="categoryTabs">
+        <button class="active" data-cat="all">Все категории</button>
+        <button data-cat="food">🍎 Еда</button>
+        <button data-cat="clothes">👕 Одежда</button>
+        <button data-cat="electronics">💻 Электроника</button>
+        <button data-cat="services">🎟️ Услуги</button>
+    </div>
+    <div class="admin-panel">
+        <button id="autoFetchBtn" class="btn btn-auto" onclick="startAutoFetch()">🤖 Авто-сбор</button>
+        <button id="addBtn" class="btn btn-add" onclick="openAddModal()">➕ Добавить</button>
+        <button id="adminBtn" class="btn btn-admin" onclick="handleAdminClick()">🔑 Админ</button>
+    </div>
+</div>
+
+<div class="deals-grid" id="dealsList"></div>
+
+<footer>© 2026 Проект по дисциплине «Основы предметной деятельности»<br>Автоматический сбор данных с веб-сайтов</footer>
+
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('loginModal')">&times;</span>
+        <h2 style="text-align:center; margin-top:0;">🔐 Вход для администратора</h2>
+        <input type="password" id="adminPass" class="login-input" placeholder="Введите пароль">
+        <button class="btn login-btn" onclick="checkPassword()">Войти</button>
+        <p id="loginError" style="color:red; text-align:center; margin:10px 0 0; display:none;">Неверный пароль!</p>
+    </div>
+</div>
+
+<!-- Add Modal -->
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('addModal')">&times;</span>
+        <h2 style="margin-top:0;">➕ Добавить новую акцию</h2>
+        <form onsubmit="event.preventDefault(); addNewDeal();">
+            <label>Название акции *</label>
+            <input type="text" id="dealTitle" required placeholder="Скидка 50% на кофе">
+            <label>Категория *</label>
+            <select id="dealCat" required>
+                <option value="food">🍎 Еда и продукты</option>
+                <option value="clothes">👕 Одежда</option>
+                <option value="electronics">💻 Электроника</option>
+                <option value="services">🎟️ Услуги и развлечения</option>
+            </select>
+            <label>Скидка (%) *</label>
+            <input type="number" id="dealDiscount" required placeholder="20" min="1" max="100">
+            <label>Источник (сайт)</label>
+            <input type="text" id="dealSource" placeholder="Например: Пятёрочка">
+            <button type="submit">✅ Сохранить</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const ADMIN_PASSWORD = "admin123";
+    const STORAGE_KEY = "admin_session_active";
+    const DEALS_KEY = "deals_data";
+
+    let deals = JSON.parse(localStorage.getItem(DEALS_KEY)) || [
+        { id: 1, title: "Пицца по цене двух", cat: "food", discount: 50, source: "Спар" },
+        { id: 2, title: "Весенняя коллекция -30%", cat: "clothes", discount: 30, source: "O'stin" }
+    ];
+    let currentCat = "all";
+    let isAdmin = localStorage.getItem(STORAGE_KEY) === "true";
+
+    // Имитация данных, которые приходят с реальных сайтов
+    const MOCK_SOURCES = {
+        pyaterochka: [
+            { title: "Скидка 35% на молочные продукты", cat: "food", discount: 35, source: "Пятёрочка" },
+            { title: "2 по цене 1 на шоколад и конфеты", cat: "food", discount: 50, source: "Пятёрочка" },
+            { title: "Свежие овощи со скидкой 25%", cat: "food", discount: 25, source: "Пятёрочка" }
+        ],
+        magnit: [
+            { title: "Распродажа бытовой химии -40%", cat: "food", discount: 40, source: "Магнит" },
+            { title: "Кофе Nescafe Gold по акции", cat: "food", discount: 30, source: "Магнит" },
+            { title: "Скидка 20% на корма для животных", cat: "food", discount: 20, source: "Магнит" }
+        ],
+        dns: [
+            { title: "Наушники TWS со скидкой 45%", cat: "electronics", discount: 45, source: "DNS" },
+            { title: "Рассрочка 0-0-24 на ноутбуки", cat: "electronics", discount: 15, source: "DNS" }
+        ]
+    };
+
+    window.addEventListener("DOMContentLoaded", () => {
+        updateAdminUI();
+        setupCategoryTabs();
+        renderDeals();
+    });
+
+    function setupCategoryTabs() {
+        document.querySelectorAll("#categoryTabs button").forEach(btn => {
+            btn.addEventListener("click", () => {
+                document.querySelectorAll("#categoryTabs button").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                currentCat = btn.dataset.cat;
+                renderDeals();
+            });
+        });
+    }
+
+    function handleAdminClick() {
+        if (isAdmin) {
+            isAdmin = false;
+            localStorage.removeItem(STORAGE_KEY);
+            updateAdminUI();
+        } else {
+            document.getElementById("adminPass").value = "";
+            document.getElementById("loginError").style.display = "none";
+            document.getElementById("loginModal").style.display = "flex";
+            setTimeout(() => document.getElementById("adminPass").focus(), 100);
+        }
+    }
+
+    function checkPassword() {
+        if (document.getElementById("adminPass").value === ADMIN_PASSWORD) {
+            isAdmin = true;
+            localStorage.setItem(STORAGE_KEY, "true");
+            closeModal("loginModal");
+            updateAdminUI();
+        } else {
+            document.getElementById("loginError").style.display = "block";
+        }
+    }
+
+    function updateAdminUI() {
+        const addBtn = document.getElementById("addBtn");
+        const autoBtn = document.getElementById("autoFetchBtn");
+        const adminBtn = document.getElementById("adminBtn");
+        
+        if (isAdmin) {
+            addBtn.style.display = "block";
+            autoBtn.style.display = "block";
+            adminBtn.innerHTML = "🔒 Выйти";
+            adminBtn.style.background = "#7f8c8d";
+        } else {
+            addBtn.style.display = "none";
+            autoBtn.style.display = "none";
+            adminBtn.innerHTML = "🔑 Админ";
+            adminBtn.style.background = "#34495e";
+        }
+    }
+
+    // 🤖 АВТО-СБОР (Симуляция + подготовка к реальному API)
+    function startAutoFetch() {
+        const btn = document.getElementById("autoFetchBtn");
+        btn.classList.add("loading");
+        btn.innerHTML = `<span class="spinner"></span> Загрузка...`;
+
+        // Имитация задержки сети (1.5 сек)
+        setTimeout(() => {
+            let newCount = 0;
+            const allMockDeals = Object.values(MOCK_SOURCES).flat();
+            
+            allMockDeals.forEach(mock => {
+                // Проверка на дубликаты по названию
+                const exists = deals.some(d => d.title.toLowerCase() === mock.title.toLowerCase());
+                if (!exists) {
+                    deals.push({ ...mock, id: Date.now() + Math.random() });
+                    newCount++;
+                }
+            });
+
+            localStorage.setItem(DEALS_KEY, JSON.stringify(deals));
+            renderDeals();
+            
+            btn.classList.remove("loading");
+            btn.innerHTML = `🤖 Авто-сбор`;
+            alert(`✅ Успешно собрано: ${newCount} новых акций.\n(В реальном проекте здесь будет fetch к вашему серверу)`);
+        }, 1500);
+    }
+
+    function renderDeals() {
+        const list = document.getElementById("dealsList");
+        list.innerHTML = "";
+        const filtered = currentCat === "all" ? deals : deals.filter(d => d.cat === currentCat);
+        
+        if (filtered.length === 0) {
+            list.innerHTML = `<div class="empty-msg">🔍 В этой категории пока нет акций</div>`;
+            return;
+        }
+
+        const catNames = { food: "🍎 Еда", clothes: "👕 Одежда", electronics: "💻 Электроника", services: "🎟️ Услуги" };
+        filtered.forEach(d => {
+            list.innerHTML += `
+                <div class="deal-card">
+                    <div class="deal-source">${d.source || '🌐'}</div>
+                    <div class="deal-cat">${catNames[d.cat] || d.cat}</div>
+                    <div class="deal-title">${d.title}</div>
+                    <div class="deal-discount">Скидка: ${d.discount}%</div>
+                </div>
+            `;
+        });
+    }
+
+    function addNewDeal() {
+        const title = document.getElementById("dealTitle").value;
+        const cat = document.getElementById("dealCat").value;
+        const discount = document.getElementById("dealDiscount").value;
+        const source = document.getElementById("dealSource").value || "Вручную";
+
+        deals.push({ id: Date.now(), title, cat, discount: parseInt(discount), source });
+        localStorage.setItem(DEALS_KEY, JSON.stringify(deals));
+        
+        document.getElementById("dealTitle").value = "";
+        document.getElementById("dealDiscount").value = "";
+        document.getElementById("dealSource").value = "";
+        closeModal("addModal");
+        renderDeals();
+    }
+
+    function openAddModal() { document.getElementById("addModal").style.display = "flex"; }
+    function closeModal(id) { document.getElementById(id).style.display = "none"; }
+    window.addEventListener("click", (e) => { if (e.target.classList.contains("modal")) e.target.style.display = "none"; });
+</script>
+
+</body>
+</html>
