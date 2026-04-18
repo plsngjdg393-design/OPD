@@ -1,20 +1,20 @@
 [
   {
     "title": "iPhone 15 со скидкой",
-    "category": "Электроника",
+    "category": "electronics",
     "discount": 15,
     "link": "https://example.com/iphone"
   },
   {
     "title": "Бургер в подарок",
-    "category": "Еда",
+    "category": "food",
+    "discount": 100,
+    "link": "https://example.com/burger"
+  },
+  {
+    "title": "ГРИША КРУТОЙ",
+    "category": "food",
     "discount": 100,
     "link": "https://example.com/burger"
   }
-  {
-    "title": "ГРИША КРУТОЙ",
-    "category": "Еда",
-    "discount": 100,
-    "link": "https://example.com/buger"
-   }
 ]
