@@ -11,10 +11,10 @@
     "discount": 100,
     "link": "https://example.com/burger"
   }
- {
+  {
     "title": "ГРИША КРУТОЙ",
     "category": "Еда",
     "discount": 100,
-    "link": "https://example.com/burger"
-  }
+    "link": "https://example.com/buger"
+   }
 ]
