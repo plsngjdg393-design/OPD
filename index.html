@@ -5,48 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🔥 Сборник Скидок и Акций</title>
     <style>
-        :root { --primary: #e74c3c; --secondary: #2ecc71; --dark: #333; --light: #f8f9fa; --shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        :root { --primary: #e74c3c; --dark: #333; --shadow: 0 4px 6px rgba(0,0,0,0.1); }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', sans-serif; background: #f4f4f9; color: var(--dark); padding: 20px; }
         header { text-align: center; margin-bottom: 30px; }
         h1 { color: var(--primary); margin-bottom: 5px; }
         .subtitle { color: #666; font-size: 0.95em; }
-
-        .controls { background: white; padding: 15px; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .categories { display: flex; flex-wrap: wrap; gap: 8px; }
-        .categories button { padding: 8px 16px; border: none; background: #eee; cursor: pointer; border-radius: 20px; font-weight: 500; transition: 0.2s; }
-        .categories button:hover { background: #ddd; }
-        .categories button.active { background: var(--primary); color: white; }
-
-        .admin-panel button { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; background: #34495e; color: white; }
-        .admin-panel button:hover { background: #2c3e50; }
-
+        .controls { background: white; padding: 15px; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 25px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+        .stores { display: flex; flex-wrap: wrap; gap: 8px; flex: 1; }
+        .stores button { padding: 8px 16px; border: none; background: #eee; cursor: pointer; border-radius: 20px; font-weight: 500; transition: 0.2s; }
+        .stores button:hover { background: #ddd; }
+        .stores button.active { background: var(--primary); color: white; }
         .deals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         .deal-card { background: white; padding: 20px; border-radius: 12px; box-shadow: var(--shadow); transition: transform 0.2s; position: relative; }
         .deal-card:hover { transform: translateY(-3px); }
-        .deal-source { position: absolute; top: 10px; right: 10px; font-size: 0.75em; background: #f0f0f0; padding: 2px 8px; border-radius: 10px; color: #555; }
-        .deal-cat { font-size: 0.8em; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .deal-store { position: absolute; top: 10px; right: 10px; font-size: 0.75em; background: #f0f0f0; padding: 2px 8px; border-radius: 10px; color: #555; }
         .deal-title { font-size: 1.2em; margin-bottom: 8px; font-weight: bold; }
         .deal-discount { color: var(--primary); font-weight: bold; font-size: 1.1em; }
         .empty-msg { grid-column: 1 / -1; text-align: center; padding: 40px; color: #888; background: white; border-radius: 12px; box-shadow: var(--shadow); }
-
         footer { text-align: center; margin-top: 50px; color: #888; font-size: 0.85em; }
     </style>
 </head>
 <body>
-
 <header>
     <h1>🔥 Сборник Скидок и Акций</h1>
-    <p class="subtitle">Автоматический сбор акций с разных сайтов</p>
+    <p class="subtitle">Автоматический сбор акций с разных магазинов</p>
 </header>
 
 <div class="controls">
-    <div class="categories" id="categoryTabs">
-        <button class="active" data-cat="all">Все категории</button>
-        <button data-cat="food">🍎 Еда</button>
-        <button data-cat="clothes">👕 Одежда</button>
-        <button data-cat="electronics">💻 Электроника</button>
-        <button data-cat="services">🎟️ Услуги</button>
+    <div class="stores" id="storeTabs">
+        <button class="active" data-store="all">Все магазины</button>
+        <button data-store="magnit">🛒 Магнит</button>
+        <button data-store="pyaterochka">🛒 Пятёрочка</button>
+        <button data-store="dns">🖥️ DNS</button>
     </div>
 </div>
 
@@ -55,77 +46,6 @@
 </div>
 
 <footer>© 2026 Проект по дисциплине «Основы предметной деятельности»<br>Автоматический сбор данных с веб-сайтов</footer>
-
-<script>
-    let currentCat = "all";
-
-    // Нормализация данных (убирает пробелы в ключах/значениях из твоего data.json)
-    function normalizeData(rawArray) {
-        return rawArray.map(item => {
-            const clean = {};
-            for (const [key, val] of Object.entries(item)) {
-                clean[key.trim()] = typeof val === 'string' ? val.trim() : val;
-            }
-            return clean;
-        });
-    }
-
-    async function loadDeals() {
-        const list = document.getElementById("dealsList");
-        try {
-            const res = await fetch('data.json?t=' + Date.now());
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            
-            const rawData = await res.json();
-            const deals = normalizeData(rawData);
-
-            list.innerHTML = "";
-            const filtered = currentCat === "all" 
-                ? deals 
-                : deals.filter(d => (d.category || d.cat) === currentCat);
-
-            if (filtered.length === 0) {
-                list.innerHTML = `<div class="empty-msg">🔍 В этой категории пока нет акций</div>`;
-                return;
-            }
-
-            const catNames = { food: "🍎 Еда", clothes: "👕 Одежда", electronics: "💻 Электроника", services: "🎟️ Услуги" };
-
-            filtered.forEach(d => {
-                const cat = d.category || d.cat || 'other';
-                const discount = d.discount || 0;
-                const source = d.source || d.site || '🌐';
-                const link = d.link || '#';
-
-                list.innerHTML += `
-                    <div class="deal-card">
-                        <div class="deal-source">${source}</div>
-                        <div class="deal-cat">${catNames[cat] || cat}</div>
-                        <div class="deal-title">${d.title || 'Без названия'}</div>
-                        <div class="deal-discount">Скидка: ${discount}%</div>
-                        ${link !== '#' ? `<a href="${link}" target="_blank" style="display:block;margin-top:10px;color:#e74c3c;text-decoration:none;font-weight:500">Перейти →</a>` : ''}
-                    </div>
-                `;
-            });
-        } catch (error) {
-            console.error('Ошибка загрузки:', error);
-            list.innerHTML = `<div class="empty-msg">⚠️ Не удалось загрузить данные.<br><small>Проверьте наличие и валидность data.json</small></div>`;
-        }
-    }
-
-    // Инициализация
-    window.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll("#categoryTabs button").forEach(btn => {
-            btn.addEventListener("click", () => {
-                document.querySelectorAll("#categoryTabs button").forEach(b => b.classList.remove("active"));
-                btn.classList.add("active");
-                currentCat = btn.dataset.cat;
-                loadDeals();
-            });
-        });
-        loadDeals();
-    });
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
