@@ -16,5 +16,11 @@
     "category": "food",
     "discount": 100,
     "link": "https://example.com/burger"
+  },
+  {
+    "title": "ГРИША НЕ КРУТОЙ",
+    "category": "food",
+    "discount": 0,
+    "link": "https://example.com/burger"
   }
 ]
