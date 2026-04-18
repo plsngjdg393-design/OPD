@@ -1,26 +1,182 @@
 [
   {
-    "title": "iPhone 15 со скидкой",
-    "category": "electronics",
+    "title": "Акция недели: товары для дома",
+    "store": "dns",
+    "discount": 30,
+    "link": "https://magnit.ru/promo-catalog"
+  },
+  {
+    "title": "Скидка64,99 ₽Сырок глазированный А.Ростагрокомплекс в молочном шоколаде 26%, 50 гНет отзывов",
+    "store": "magnit",
+    "discount": 26,
+    "link": "https://magnit.ru/promo-product/2179682-syrok-glazirovannyi-a-rostagrokompleks-v-molochnom-shokolade-26-50-g?shopCode=992301"
+  },
+  {
+    "title": "Скидка на категориюЧистящие средства для уборки и сантехникиНет отзывов",
+    "store": "magnit",
     "discount": 15,
-    "link": "https://example.com/iphone"
+    "link": "https://magnit.ru/promo-product/2178571-chistiashchie-sredstva-dlia-uborki-i-santekhniki?shopCode=992301"
   },
   {
-    "title": "Бургер в подарок",
-    "category": "food",
-    "discount": 100,
-    "link": "https://example.com/burger"
+    "title": "Скидка на категориюУход за зубами и полостью ртаНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178567-ukhod-za-zubami-i-polost-iu-rta?shopCode=992301"
   },
   {
-    "title": "ГРИША КРУТОЙ",
-    "category": "food",
-    "discount": 100,
-    "link": "https://example.com/burger"
+    "title": "Скидка на категориюСредства для бритья и после бритьяНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178607-sredstva-dlia-brit-ia-i-posle-brit-ia?shopCode=992301"
   },
   {
-    "title": "ГРИША НЕ КРУТОЙ",
-    "category": "food",
-    "discount": 0,
-    "link": "https://example.com/burger"
+    "title": "Скидка на категориюдо 20%Игристые виноградные винаНет отзывов",
+    "store": "magnit",
+    "discount": 20,
+    "link": "https://magnit.ru/promo-product/2178603-igristye-vinogradnye-vina?shopCode=992301"
+  },
+  {
+    "title": "Скидка на категориюСредства по уходу за волосамиНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178589-sredstva-po-ukhodu-za-volosami?shopCode=992301"
+  },
+  {
+    "title": "Скидка на категориюСредства для душа: гели,пены, солиНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178595-sredstva-dlia-dusha-geli-peny-soli?shopCode=992301"
+  },
+  {
+    "title": "Скидка на категорию-25%Весовые конфеты*Нет отзывов",
+    "store": "magnit",
+    "discount": 25,
+    "link": "https://magnit.ru/promo-product/2178623-vesovye-konfety?shopCode=992301"
+  },
+  {
+    "title": "Скидка179,99 ₽Чипсы Lays Рифлёные Сметана и лук, 140 гНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2179845-chipsy-lays-riflionye-smetana-i-luk-140-g?shopCode=992301"
+  },
+  {
+    "title": "АкцияЧай черный Richard, в ассортименте, 100 пакетиковНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178709-chai-chernyi-richard-v-assortimente-100-paketikov?shopCode=992301"
+  },
+  {
+    "title": "АкцияЧай черный Richard, в ассортименте, 100 пакетиковНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178657-chai-chernyi-richard-v-assortimente-100-paketikov?shopCode=992301"
+  },
+  {
+    "title": "АкцияЦветки Ромашка фильтр-пакет, 1,5 г, 20 штНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178033-tsvetki-romashka-fil-tr-paket-1-5-g-20-sht?shopCode=992301"
+  },
+  {
+    "title": "АкцияФиле грудки индейки Индилайт обжаренное на гриле, 300 гНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178700-file-grudki-indeiki-indilait-obzharennoe-na-grile-300-g?shopCode=992301"
+  },
+  {
+    "title": "АкцияФиле грудки индейки Индилайт обжаренное на гриле, 300 гНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178691-file-grudki-indeiki-indilait-obzharennoe-na-grile-300-g?shopCode=992301"
+  },
+  {
+    "title": "Скидка199,99 ₽-49%389,99 ₽Туалетная бумага Zewa Deluxe белая 3 слоя, 8 рулоновНет отзывов",
+    "store": "magnit",
+    "discount": 49,
+    "link": "https://magnit.ru/promo-product/2179680-tualetnaia-bumaga-zewa-deluxe-belaia-3-sloia-8-rulonov?shopCode=992301"
+  },
+  {
+    "title": "АкцияТворог Агуша, в ассортименте, 100 гНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178666-tvorog-agusha-v-assortimente-100-g?shopCode=992301"
+  },
+  {
+    "title": "АкцияТворог Агуша, в ассортименте, 100 гНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178665-tvorog-agusha-v-assortimente-100-g?shopCode=992301"
+  },
+  {
+    "title": "АкцияТаблетки шипучие Супрадин, 10 штНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178025-tabletki-shipuchie-supradin-10-sht?shopCode=992301"
+  },
+  {
+    "title": "АкцияТаблетки для мытья посуды в ПММ Simbl сила кислорода, 50 штНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178509-tabletki-dlia-myt-ia-posudy-v-pmm-simbl-sila-kisloroda-50-sht?shopCode=992301"
+  },
+  {
+    "title": "АкцияТаблетки для мытья посуды в ПММ Simbl кристал забота, 100 штНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178508-tabletki-dlia-myt-ia-posudy-v-pmm-simbl-kristal-zabota-100-sht?shopCode=992301"
+  },
+  {
+    "title": "АкцияТаблетки Витридинол, 120 мг, 56 штНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178030-tabletki-vitridinol-120-mg-56-sht?shopCode=992301"
+  },
+  {
+    "title": "АкцияТаблетки Адеметионин Велфарм, 400 мг, 20 штНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178027-tabletki-ademetionin-velfarm-400-mg-20-sht?shopCode=992301"
+  },
+  {
+    "title": "АкцияСыр Радость Вкуса, в ассортименте, 125-180 гНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178655-syr-radost-vkusa-v-assortimente-125-180-g?shopCode=992301"
+  },
+  {
+    "title": "АкцияСыр Радость Вкуса, в ассортименте, 125-180 гНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178697-syr-radost-vkusa-v-assortimente-125-180-g?shopCode=992301"
+  },
+  {
+    "title": "АкцияСосиски Идель Восточные с говядиной Халяль, 500 гНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178692-sosiski-idel-vostochnye-s-goviadinoi-khalial-500-g?shopCode=992301"
+  },
+  {
+    "title": "АкцияСосиски Идель Восточные с говядиной Халяль, 500 гНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178702-sosiski-idel-vostochnye-s-goviadinoi-khalial-500-g?shopCode=992301"
+  },
+  {
+    "title": "АкцияСок Сады Придонья, в ассортименте, 1 лНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178685-sok-sady-pridon-ia-v-assortimente-1-l?shopCode=992301"
+  },
+  {
+    "title": "АкцияСок Сады Придонья, в ассортименте, 1 лНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178669-sok-sady-pridon-ia-v-assortimente-1-l?shopCode=992301"
+  },
+  {
+    "title": "АкцияСервелат Папа Может, в ассортиментеНет отзывов",
+    "store": "magnit",
+    "discount": 15,
+    "link": "https://magnit.ru/promo-product/2178706-servelat-papa-mozhet-v-assortimente?shopCode=992301"
   }
 ]

@@ -1,71 +1,41 @@
-let currentStore = "all";
-
-// Убирает пробелы в ключах и значениях (защита от кривого JSON)
-function normalizeData(rawArray) {
-    return rawArray.map(item => {
-        const clean = {};
-        for (const [key, val] of Object.entries(item)) {
-            clean[key.trim()] = typeof val === 'string' ? val.trim() : val;
-        }
-        return clean;
-    });
-}
-
-async function loadDeals() {
-    const list = document.getElementById("dealsList");
+async function loadDiscounts() {
     try {
-        const res = await fetch('data.json?t=' + Date.now());
-        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const response = await fetch('data.json?t=' + Date.now());
+        if (!response.ok) throw new Error('HTTP ' + response.status);
         
-        const rawData = await res.json();
-        const deals = normalizeData(rawData);
+        const data = await response.json();
+        const container = document.getElementById('discounts-container') || document.getElementById('dealsList');
         
-        list.innerHTML = "";
-        const filtered = currentStore === "all" 
-            ? deals 
-            : deals.filter(d => d.store?.toLowerCase() === currentStore);
-
-        if (filtered.length === 0) {
-            list.innerHTML = `<div class="empty-msg">🔍 В этом магазине пока нет акций</div>`;
+        if (!container) {
+            console.error('Контейнер для карточек не найден в HTML');
             return;
         }
 
-        const storeNames = { 
-            magnit: "🛒 Магнит", 
-            pyaterochka: "🛒 Пятёрочка", 
-            dns: "🖥️ DNS", 
-            unknown: "🌐 Другой" 
-        };
+        container.innerHTML = '';
 
-        filtered.forEach(d => {
-            const storeKey = d.store?.toLowerCase() || 'unknown';
-            const discount = d.discount || 0;
-            const title = d.title || 'Без названия';
-            const link = d.link || '#';
+        data.forEach(item => { // ← Исправлено: убран пробел в "=>"
+            const title = item.title?.trim() || 'Без названия';
+            const discount = item.discount || 0;
+            const category = item.category?.trim() || 'other';
+            const link = item.link?.trim() || '#';
 
-            list.innerHTML += `
+            const card = `
                 <div class="deal-card">
-                    <div class="deal-store">${storeNames[storeKey] || storeKey}</div>
+                    <div class="deal-source">🌐 ${category}</div>
                     <div class="deal-title">${title}</div>
                     <div class="deal-discount">Скидка: ${discount}%</div>
                     ${link !== '#' ? `<a href="${link}" target="_blank" style="display:block;margin-top:10px;color:#e74c3c;text-decoration:none;font-weight:500">Перейти →</a>` : ''}
                 </div>
             `;
+            container.innerHTML += card;
         });
     } catch (error) {
-        console.error('Ошибка загрузки:', error);
-        list.innerHTML = `<div class="empty-msg">⚠️ Не удалось загрузить данные.<br><small>Проверьте наличие и валидность data.json</small></div>`;
+        console.error('Ошибка загрузки данных:', error);
+        const container = document.getElementById('discounts-container') || document.getElementById('dealsList');
+        if (container) {
+            container.innerHTML = `<div class="empty-msg">⚠️ Ошибка загрузки: ${error.message}<br><small>Проверьте валидность data.json</small></div>`;
+        }
     }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll("#storeTabs button").forEach(btn => {
-        btn.addEventListener("click", () => {
-            document.querySelectorAll("#storeTabs button").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            currentStore = btn.dataset.store;
-            loadDeals();
-        });
-    });
-    loadDeals();
-});
+document.addEventListener('DOMContentLoaded', loadDiscounts);
